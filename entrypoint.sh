@@ -13,7 +13,7 @@ if [ -n "${BASTION_HOST}" ]; then
 		[[ -z "${!env_var}" ]] && echo "Please set $env_var" && exit 1
 	done
 
-	echo '::group::🔌 Set ssh tunnel'
+	echo '::group::🔑 Set SSH PEM'
 	# Save PEM
 	mkdir ~/.ssh
 	touch ~/.ssh/known_hosts
@@ -25,8 +25,10 @@ if [ -n "${BASTION_HOST}" ]; then
 	chmod 400 ~/.ssh/ssh_key.pem
 
 	# Test SSH connection
+	echo '::group::⚙️  Test SSH Connection'
 	ssh -q -o BatchMode=yes -o ConnectTimeout=30 "$BASTION_USER@$BASTION_HOST" -i ~/.ssh/ssh_key.pem 'exit 0'
 
+	echo '::group::🔌 Set ssh tunnel'
 	# Set SSH tunnel
 	ssh -o ExitOnForwardFailure=yes -f -N -L "localhost:$SSH_TUNNEL_PORT:$DB_HOST:$DB_PORT" "$BASTION_USER@$BASTION_HOST" -i ~/.ssh/ssh_key.pem
 else

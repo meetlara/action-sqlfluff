@@ -7,6 +7,30 @@ SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 
 export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN:?}"
 
+# Set SSH tunnel
+if [ -n "${BASTION_HOST}" ]; then
+	for env_var in "BASTION_USER" "BASTION_PEM" "SSH_TUNNEL_PORT" "DB_HOST" "DB_PORT" "DB_USER" "DB_PASSWORD" "DB_NAME"; do
+		[[ -z "${!env_var}" ]] && echo "Please set $env_var" && exit 1
+	done
+
+	echo '::group::🔌 Set ssh tunnel'
+	# Save PEM
+	mkdir ~/.ssh
+	touch ~/.ssh/known_hosts
+	touch ~/.ssh/ssh_key.pem
+	ssh-keyscan -H "$BASTION_HOST" >>~/.ssh/known_hosts
+	eval $(ssh-agent -s)
+	ssh-add - <<<"$BASTION_PEM"
+	echo "$BASTION_PEM" >>~/.ssh/ssh_key.pem
+	chmod 400 ~/.ssh/ssh_key.pem
+
+	# Test SSH connection
+	ssh -q -o BatchMode=yes -o ConnectTimeout=30 "$BASTION_USER@$BASTION_HOST" -i ~/.ssh/ssh_key.pem 'exit 0'
+
+	# Set SSH tunnel
+	ssh -o ExitOnForwardFailure=yes -f -N -L "localhost:$SSH_TUNNEL_PORT:$DB_HOST:$DB_PORT" "$BASTION_USER@$BASTION_HOST" -i ~/.ssh/ssh_key.pem
+fi
+
 # Avoid 'fatal: detected dubious ownership in repository'
 git config --global --add safe.directory /github/workspace
 

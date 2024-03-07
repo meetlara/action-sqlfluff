@@ -26,7 +26,7 @@ if [ -n "${BASTION_HOST}" ]; then
 
 	# Test SSH connection
 	echo '::group::⚙️  Test SSH Connection'
-	ssh -o BatchMode=yes -o ConnectTimeout=30 "$BASTION_USER@$BASTION_HOST" -i ~/.ssh/ssh_key.pem 'exit 0'
+	ssh -o StrictHostKeyChecking=no -o BatchMode=yes -o ConnectTimeout=30 "$BASTION_USER@$BASTION_HOST" -i ~/.ssh/ssh_key.pem 'exit 0'
 
 	echo '::group::🔌 Set ssh tunnel'
 	# Set SSH tunnel

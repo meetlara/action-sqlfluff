@@ -29,6 +29,8 @@ if [ -n "${BASTION_HOST}" ]; then
 
 	# Set SSH tunnel
 	ssh -o ExitOnForwardFailure=yes -f -N -L "localhost:$SSH_TUNNEL_PORT:$DB_HOST:$DB_PORT" "$BASTION_USER@$BASTION_HOST" -i ~/.ssh/ssh_key.pem
+else
+	echo '::group::🔌 Set ssh tunnel - Bastion Host not specified, skipping.'
 fi
 
 # Avoid 'fatal: detected dubious ownership in repository'

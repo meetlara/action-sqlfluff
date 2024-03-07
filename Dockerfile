@@ -15,6 +15,7 @@ RUN apt-get update -y \
         jq \
         build-essential \
         libsasl2-dev \
+		ssh \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

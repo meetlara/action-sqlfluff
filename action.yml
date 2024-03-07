@@ -46,7 +46,7 @@ inputs:
     required: false
     default: "2.3.0"
   sqlfluff_command:
-    description: "The sub command of sqlfluff. One of lint and fix"
+    description: "The sub command of sqlfluff. Either lint, fix or both (which runs fix and then lint)"
     required: false
     default: "lint"
   paths:

@@ -86,8 +86,13 @@ if [[ -f "${INPUT_WORKING_DIRECTORY}/dependencies.yml" ]]; then
 fi
 echo '::endgroup::'
 
+if [[ ! "${SQLFLUFF_COMMAND:?}" == @(lint|fix|both) ]]; then
+	echo 'ERROR: SQLFLUFF_COMMAND must be one of lint and fix'
+	exit 1
+fi
+
 # Lint changed files if the mode is lint
-if [[ "${SQLFLUFF_COMMAND:?}" == "lint" ]]; then
+if [[ "${SQLFLUFF_COMMAND:?}" == @(lint|both) ]]; then
 	echo '::group:: Running sqlfluff 🐶 ...'
 	# Allow failures now, as reviewdog handles them
 	set +Eeuo pipefail
@@ -138,10 +143,11 @@ if [[ "${SQLFLUFF_COMMAND:?}" == "lint" ]]; then
 	echo '::endgroup::'
 
 	exit $sqlfluff_exit_code
+fi
 # END OF lint
 
 # Format changed files if the mode is fix
-elif [[ "${SQLFLUFF_COMMAND}" == "fix" ]]; then
+if [[ "${SQLFLUFF_COMMAND}" == @(fix|both) ]]; then
 	echo '::group:: Running sqlfluff 🐶 ...'
 	# Allow failures now, as reviewdog handles them
 	set +Eeuo pipefail
@@ -188,9 +194,5 @@ elif [[ "${SQLFLUFF_COMMAND}" == "fix" ]]; then
 	echo '::endgroup::'
 
 	exit $sqlfluff_exit_code
-	# exit $exit_code
-# END OF fix
-else
-	echo 'ERROR: SQLFLUFF_COMMAND must be one of lint and fix'
-	exit 1
 fi
+# END OF fix

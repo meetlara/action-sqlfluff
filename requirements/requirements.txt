@@ -4,6 +4,7 @@ pre-commit>=2.0,<3.0
 # sqlfluff
 # sqlfluff==${SQLFLUFF_VERSION}
 git+https://github.com/sqlfluff/sqlfluff.git
-sqlfluff-templater-dbt==${SQLFLUFF_VERSION}
+#sqlfluff-templater-dbt==${SQLFLUFF_VERSION}
+sqlfluff-templater-dbt @ git+https://github.com/sqlfluff/sqlfluff.git#subdirectory=plugins/sqlfluff-templater-dbt
 
 pytz>=2015.7

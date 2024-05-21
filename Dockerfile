@@ -16,6 +16,9 @@ RUN apt-get update -y \
         build-essential \
         libsasl2-dev \
 		ssh \
+		libpq-dev \
+		gcc \
+		python3-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

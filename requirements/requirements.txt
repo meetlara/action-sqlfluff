@@ -2,7 +2,8 @@ setuptools>=65.5.1
 pre-commit>=2.0,<3.0
 
 # sqlfluff
-sqlfluff==${SQLFLUFF_VERSION}
+# sqlfluff==${SQLFLUFF_VERSION}
+git+https://github.com/sqlfluff/sqlfluff.git
 sqlfluff-templater-dbt==${SQLFLUFF_VERSION}
 
 pytz>=2015.7

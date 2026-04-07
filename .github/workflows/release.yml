@@ -55,4 +55,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Post bumpr status comment
-        uses: haya14busa/action-bumpr@v1
+        uses: haya14busa/action-bumpr@faf6f474bcb6174125cfc569f0b2e24cbf03d496 # v1

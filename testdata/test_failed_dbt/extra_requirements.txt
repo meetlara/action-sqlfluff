@@ -5,3 +5,4 @@ dbt-snowflake>=1.0.0,<2.0
 dbt-spark[pyHive]>=1.0.0,<2.0
 
 pyopenssl==26.0.0
+filelock>=4.2.1 # transitive dependency pinned by Aikido Autofix to remediate a vulnerability
